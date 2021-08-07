@@ -8,6 +8,7 @@ const healthBtn = document.querySelector('#heal-btn');
 const logBtn = document.querySelector('#log-btn');
 
 const attackValue = 10;
+const strongAttackValue = 17;
 const monsterAttackValue = 14; 
 let chosenMaxLife = 100;
 let currentMonsterHealth = chosenMaxLife;
@@ -51,8 +52,14 @@ function setPlayerHealth(health) {
   playerHealthBar.value = health;
 }
 
-function attackHandler() {
-  const damage = dealMonsterDamage(attackValue);
+function attack(mode){
+  let maxDamage;
+  if (mode === 'Attack'){
+    maxDamage = attackValue
+  } else if (mode === 'strongAttack'){
+    maxDamage = strongAttackValue;
+  }
+  const damage = dealMonsterDamage(maxDamage);
   currentMonsterHealth -= damage;
   const playerDamage = dealPlayerDamage(monsterAttackValue);
   currentPlayerHealth -= playerDamage;
@@ -65,4 +72,13 @@ function attackHandler() {
   }
 }
 
-attackBtn.addEventListener('click' , attackHandler)
+function attackHandler() {
+  attack('Attack');
+}
+
+function strongAttackHandler(){
+  attack('strongAttack');
+}
+
+attackBtn.addEventListener('click' , attackHandler);
+strongAttackBtn.addEventListener('click' , strongAttackHandler);
