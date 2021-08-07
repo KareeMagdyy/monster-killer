@@ -7,6 +7,12 @@ const strongAttackBtn = document.querySelector('#strong-attack-btn');
 const healthBtn = document.querySelector('#heal-btn');
 const logBtn = document.querySelector('#log-btn');
 
+const attackValue = 10;
+const monsterAttackValue = 14; 
+let chosenMaxLife = 100;
+let currentMonsterHealth = chosenMaxLife;
+let currentPlayerHealth = chosenMaxLife;
+
 function adjustHealthBars(maxLife) {
   monsterHealthBar.max = maxLife;
   monsterHealthBar.value = maxLife;
@@ -14,15 +20,17 @@ function adjustHealthBars(maxLife) {
   playerHealthBar.value = maxLife;
 }
 
+adjustHealthBars(chosenMaxLife);
+
 function dealMonsterDamage(damage) {
   const dealtDamage = Math.random() * damage;
-  monsterHealthBar.value = +monsterHealthBar - dealtDamage;
+  monsterHealthBar.value = +monsterHealthBar.value - dealtDamage;
   return dealtDamage;
 }
 
 function dealPlayerDamage(damage) {
   const dealtDamage = Math.random() * damage;
-  playerHealthBar.value = +playerHealthBar - dealtDamage;
+  playerHealthBar.value = +playerHealthBar.value- dealtDamage;
   return dealtDamage;
 }
 
@@ -42,3 +50,19 @@ function removeBonusLife() {
 function setPlayerHealth(health) {
   playerHealthBar.value = health;
 }
+
+function attackHandler() {
+  const damage = dealMonsterDamage(attackValue);
+  currentMonsterHealth -= damage;
+  const playerDamage = dealPlayerDamage(monsterAttackValue);
+  currentPlayerHealth -= playerDamage;
+  if (currentMonsterHealth <= 0 && currentPlayerHealth > 0) {
+    alert('You Won!')
+  } else if (currentPlayerHealth <= 0 && currentMonsterHealth > 0) {
+    alert('You Lost!');
+  } else if (currentMonsterHealth <= 0 && currentPlayerHealth <= 0) {
+    alert('Draw')
+  }
+}
+
+attackBtn.addEventListener('click' , attackHandler)
